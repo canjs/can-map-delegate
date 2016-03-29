@@ -1,7 +1,5 @@
-@page can.Map.delegate delegate
-@parent can.Map.plugins
-@plugin can/map/delegate
-@test can/map/delegate/test.html
+@page can-map-delegate.delegate Delegate
+@parent can-map-delegate.usage
 
 The __delegate__ plugin allows you to listen to more specific event changes on 
 [can.Map Maps].  It allows you to specify:

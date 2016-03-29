@@ -1,6 +1,5 @@
 @function can.Map.prototype.delegate delegate
-@parent can.Map.delegate 0
-@plugin can/map/delegate
+@parent can-map-delegate.api 0
 @signature `observe.delegate( selector, event, handler )`
 
 @body

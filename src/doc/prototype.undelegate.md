@@ -1,6 +1,5 @@
 @function can.Map.prototype.undelegate undelegate
-@parent can.Map.delegate 1
-@plugin can/map/delegate
+@parent can-map-delegate.api 1
 
 @signature `observe.undelegate( selector, event, handler )`
 `undelegate( selector, event, handler )` removes a delegated event handler from an observe.

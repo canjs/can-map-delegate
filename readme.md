@@ -1,3 +1,9 @@
+@page can-map-delegate
+@group can-map-delegate.usage 0 Usage
+@group can-map-delegate.api 1 API
+@test src/test/test.html
+
+
 # can-map-delegate
 
 [![Build Status](https://travis-ci.org/canjs/can-map-delegate.png?branch=master)](https://travis-ci.org/canjs/can-map-delegate)
