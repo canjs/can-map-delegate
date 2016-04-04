@@ -1,6 +1,6 @@
 {
   "name": "can-map-delegate",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Listen to Map attribute selectors",
   "homepage": "https://canjs.com",
   "author": {
