@@ -1,9 +1,6 @@
-@page can-map-delegate
-@group can-map-delegate.api 0 API
-@test src/test/test.html
+# can-map-delegate (DEPRECATED)
 
-
-## can-map-delegate
+**The can-map-delegate plugin is deprecated.**
 
 [![Build Status](https://travis-ci.org/canjs/can-map-delegate.png?branch=master)](https://travis-ci.org/canjs/can-map-delegate)
 
@@ -153,8 +150,7 @@ Delegate will listen on the object until you
 call <code>[can.Map.prototype.undelegate undelegate]\(selector, event, handler\)</code> to remove the event handler.
 
     o.undelegate("name.first","set", handler );
-
-
+    
 ## Use
 
 ### ES6 use
@@ -204,7 +200,7 @@ Load the `global` version of the plugin:
 <script src='./node_modules/can-map-delegate/dist/global/can-map-delegate.js'></script>
 ```
 
-## Contributing
+## Making Changes
 
 ### Making a Build
 
