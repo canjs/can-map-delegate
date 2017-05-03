@@ -1,5 +1,7 @@
 # can-map-delegate (DEPRECATED)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-map-delegate.svg)](https://greenkeeper.io/)
+
 **The can-map-delegate plugin is deprecated.**
 
 [![Build Status](https://travis-ci.org/canjs/can-map-delegate.png?branch=master)](https://travis-ci.org/canjs/can-map-delegate)
