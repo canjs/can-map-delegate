@@ -4,14 +4,14 @@ require('steal-qunit');
 
 QUnit.module('can/map/delegate');
 var matches = can.Map.prototype.delegate.matches;
-test('matches', function () {
-	equal(matches(['**'], [
+QUnit.test('matches', function(assert) {
+	assert.equal(matches(['**'], [
 		'foo',
 		'bar',
 		'0'
 	]), 'foo.bar.0', 'everything');
-	equal(matches(['*.**'], ['foo']), null, 'everything at least one level deep');
-	equal(matches([
+	assert.equal(matches(['*.**'], ['foo']), null, 'everything at least one level deep');
+	assert.equal(matches([
 		'foo',
 		'*'
 	], [
@@ -19,12 +19,12 @@ test('matches', function () {
 		'bar',
 		'0'
 	]), 'foo.bar');
-	equal(matches(['*'], [
+	assert.equal(matches(['*'], [
 		'foo',
 		'bar',
 		'0'
 	]), 'foo');
-	equal(matches([
+	assert.equal(matches([
 		'*',
 		'bar'
 	], [
@@ -33,7 +33,7 @@ test('matches', function () {
 		'0'
 	]), 'foo.bar');
 });
-test('delegate', 4, function () {
+QUnit.test('delegate', 4, function(assert) {
 	var state = new can.Map({
 		properties: {
 			prices: []
@@ -41,36 +41,36 @@ test('delegate', 4, function () {
 	});
 	var prices = state.attr('properties.prices');
 	state.delegate('properties.prices', 'change', function (ev, attr, how, val) {
-		equal(attr, '0', 'correct change name');
-		equal(how, 'add');
-		equal(val[0].attr('foo'), 'bar', 'correct');
-		ok(this === prices, 'rooted element');
+		assert.equal(attr, '0', 'correct change name');
+		assert.equal(how, 'add');
+		assert.equal(val[0].attr('foo'), 'bar', 'correct');
+		assert.ok(this === prices, 'rooted element');
 	});
 	prices.push({
 		foo: 'bar'
 	});
 	state.undelegate();
 });
-test('delegate on add', 2, function () {
+QUnit.test('delegate on add', 2, function(assert) {
 	var state = new can.Map({});
 	state.delegate('foo', 'add', function (ev, newVal) {
-		ok(true, 'called');
-		equal(newVal, 'bar', 'got newVal');
+		assert.ok(true, 'called');
+		assert.equal(newVal, 'bar', 'got newVal');
 	})
 		.delegate('foo', 'remove', function () {
-			ok(false, 'remove should not be called');
+			assert.ok(false, 'remove should not be called');
 		});
 	state.attr('foo', 'bar');
 });
-test('delegate set is called on add', 2, function () {
+QUnit.test('delegate set is called on add', 2, function(assert) {
 	var state = new can.Map({});
 	state.delegate('foo', 'set', function (ev, newVal) {
-		ok(true, 'called');
-		equal(newVal, 'bar', 'got newVal');
+		assert.ok(true, 'called');
+		assert.equal(newVal, 'bar', 'got newVal');
 	});
 	state.attr('foo', 'bar');
 });
-test('delegate\'s this', 5, function () {
+QUnit.test('delegate\'s this', 5, function(assert) {
 	var state = new can.Map({
 		person: {
 			name: {
@@ -85,24 +85,24 @@ test('delegate\'s this', 5, function () {
 	// listen to person name changes
 	state.delegate('person.name', 'set', check = function (ev, newValue, oldVal, from) {
 		// make sure we are getting back the person.name
-		equal(this, n);
-		equal(newValue, 'Brian');
-		equal(oldVal, 'justin');
+		assert.equal(this, n);
+		assert.equal(newValue, 'Brian');
+		assert.equal(oldVal, 'justin');
 		// and how to get there
-		equal(from, 'first');
+		assert.equal(from, 'first');
 	});
 	n.attr('first', 'Brian');
 	state.undelegate('person.name', 'set', check);
 	// stop listening
 	// now listen to changes in prop
 	state.delegate('prop', 'set', function () {
-		equal(this, 'food');
+		assert.equal(this, 'food');
 	});
 	// this is weird, probably need to support direct bind ...
 	// update the prop
 	state.attr('prop', 'food');
 });
-test('delegate on deep properties with *', function () {
+QUnit.test('delegate on deep properties with *', function(assert) {
 	var state = new can.Map({
 		person: {
 			name: {
@@ -112,48 +112,48 @@ test('delegate on deep properties with *', function () {
 		}
 	});
 	state.delegate('person', 'set', function (ev, newVal, oldVal, attr) {
-		equal(this, state.attr('person'), 'this is set right');
-		equal(attr, 'name.first');
+		assert.equal(this, state.attr('person'), 'this is set right');
+		assert.equal(attr, 'name.first');
 	});
 	state.attr('person.name.first', 'brian');
 });
-test('compound sets', function () {
+QUnit.test('compound sets', function(assert) {
 	var state = new can.Map({
 		type: 'person',
 		id: '5'
 	});
 	var count = 0;
 	state.delegate('type=person id', 'set', function () {
-		equal(state.type, 'person', 'type is person');
-		ok(state.id !== undefined, 'id has value');
+		assert.equal(state.type, 'person', 'type is person');
+		assert.ok(state.id !== undefined, 'id has value');
 		count++;
 	});
 	// should trigger a change
 	state.attr('id', 0);
-	equal(count, 1, 'changing the id to 0 caused a change');
+	assert.equal(count, 1, 'changing the id to 0 caused a change');
 	// should not fire a set
 	state.removeAttr('id');
-	equal(count, 1, 'removing the id changed nothing');
+	assert.equal(count, 1, 'removing the id changed nothing');
 	state.attr('id', 3);
-	equal(count, 2, 'adding an id calls callback');
+	assert.equal(count, 2, 'adding an id calls callback');
 	state.attr('type', 'peter');
-	equal(count, 2, 'changing the type does not fire callback');
+	assert.equal(count, 2, 'changing the type does not fire callback');
 	state.removeAttr('type');
 	state.removeAttr('id');
-	equal(count, 2, '');
+	assert.equal(count, 2, '');
 	state.attr({
 		type: 'person',
 		id: '5'
 	});
-	equal(count, 3, 'setting person and id only fires 1 event');
+	assert.equal(count, 3, 'setting person and id only fires 1 event');
 	state.removeAttr('type');
 	state.removeAttr('id');
 	state.attr({
 		type: 'person'
 	});
-	equal(count, 3, 'setting person does not fire anything');
+	assert.equal(count, 3, 'setting person does not fire anything');
 });
-test('undelegate within event loop', 1, function () {
+QUnit.test('undelegate within event loop', 1, function(assert) {
 	var state = new can.Map({
 		type: 'person',
 		id: '5'
@@ -163,13 +163,13 @@ test('undelegate within event loop', 1, function () {
 		state.undelegate('type', 'add', f2);
 	};
 	f2 = function () {
-		ok(false, 'I am removed, how am I called');
+		assert.ok(false, 'I am removed, how am I called');
 	};
 	f3 = function () {
 		state.undelegate('type', 'add', f1);
 	};
 	f4 = function () {
-		ok(true, 'f4 called');
+		assert.ok(true, 'f4 called');
 	};
 
 	state.delegate('type', 'set', f1);
@@ -178,7 +178,7 @@ test('undelegate within event loop', 1, function () {
 	state.delegate('type', 'set', f4);
 	state.attr('type', 'other');
 });
-test('selector types', 5, function () {
+QUnit.test('selector types', 5, function(assert) {
 	var state = new can.Map({
 		foo: 'a',
 		bar: 'b',
@@ -187,31 +187,31 @@ test('selector types', 5, function () {
 		baw: 'e'
 	});
 	state.delegate('foo=aa', 'change', function () {
-		ok(true, 'Unquoted value in selector matched.');
+		assert.ok(true, 'Unquoted value in selector matched.');
 	});
 	state.attr({
 		foo: 'aa'
 	});
 	state.delegate('bar=\'b b\'', 'change', function () {
-		ok(true, 'Single-quoted value in selector matched.');
+		assert.ok(true, 'Single-quoted value in selector matched.');
 	});
 	state.attr({
 		bar: 'b b'
 	});
 	state.delegate('baz="c c"', 'change', function () {
-		ok(true, 'Double-quoted value in selector matched.');
+		assert.ok(true, 'Double-quoted value in selector matched.');
 	});
 	state.attr({
 		baz: 'c c'
 	});
 	state.delegate('box', 'change', function () {
-		ok(true, 'No-value attribute in selector matched.');
+		assert.ok(true, 'No-value attribute in selector matched.');
 	});
 	state.attr({
 		box: 'quux'
 	});
 	state.delegate('baw=', 'change', function () {
-		ok(true, 'Empty-value shortcut in selector matched.');
+		assert.ok(true, 'Empty-value shortcut in selector matched.');
 	});
 	state.attr({
 		baw: ''
